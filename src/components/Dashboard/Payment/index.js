@@ -1,10 +1,6 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
-export default function TicketTypes() {
-  const [presencial, setPresencial] = useState(false);
-  const [online, setOnline] = useState(false);
-
+export default function TicketTypes({ presencial, setPresencial, online, setOnline }) {
   function selectPresencial() {
     if (!presencial && !online) {
       setPresencial(true);
