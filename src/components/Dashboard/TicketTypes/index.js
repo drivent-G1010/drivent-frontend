@@ -50,6 +50,7 @@ export default function TicketTypes({ presencial, setPresencial, online, setOnli
     </>
   );
 }
+
 const DashbordaArea = styled.div`
   font-family: 'Roboto', sans-serif;
 `;
