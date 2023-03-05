@@ -1,12 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function OnlineConfirmation() {
+  const navigate = useNavigate();
+
   return (
     <ConfirmationOnline>
       <p>
         Fechado! O total ficou em <span>R$ 100</span>. Agora é só confirmar:
       </p>
-      <Button>RESERVAR INGRESSO</Button>
+      <Button onClick={() => navigate('/dashboard/payment/credit-card')}>RESERVAR INGRESSO</Button>
     </ConfirmationOnline>
   );
 }
