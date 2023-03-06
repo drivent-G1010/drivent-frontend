@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useSaveTicket from '../../../hooks/api/useSaveTicket';
 import useTicketTypes from '../../../hooks/api/useTicketTypes';
@@ -8,6 +9,7 @@ export default function OnlineConfirmation({ typeOfTicket }) {
   const { ticketTypes } = useTicketTypes();
   const { saveTicket } = useSaveTicket();
   const [ticket, setTicket] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (ticketTypes) {
@@ -25,14 +27,15 @@ export default function OnlineConfirmation({ typeOfTicket }) {
     }
   }, [ticketTypes, typeOfTicket]);
 
-  function createTicketOnline() {
+  async function createTicketOnline() {
     const data = {
       ticketTypeId: ticket[0].id,
     };
 
     try {
-      saveTicket(data);
+      await saveTicket(data);
       toast('Ticket reservado!');
+      navigate('/dashboard/payment/credit-card');
     } catch (error) {
       // eslint-disable-next-line
       console.log(error);
