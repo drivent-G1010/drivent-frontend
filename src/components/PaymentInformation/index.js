@@ -1,32 +1,49 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
-import dayjs from 'dayjs';
-import CustomParseFormat from 'dayjs/plugin/customParseFormat';
 import React, { useState } from 'react';
 import PaymentForm from './creditCard';
-import SuccessMessage from './successMsg';
-
-dayjs.extend(CustomParseFormat);
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import useTicket from '../../hooks/api/useTicket';
 
 export default function PaymentInformation() {
+  const { ticketId } = useParams();
+  const { getticket } = useTicket();
   const [status, setStatus] = useState(false);
+  const [ticketValue, setTicketValue] = useState('');
+  const [isRemote, setIsRemote] = useState('');
+  const [includesHotel, setIncludesHotel] = useState('');
+
+  useEffect(async() => {
+    const ticket = await getticket();
+
+    if (!ticket) {
+      return;
+    } else {
+      setTicketValue(ticket.TicketType.price);
+      setIsRemote(ticket.TicketType.isRemote);
+      setIncludesHotel(ticket.TicketType.includesHotel);
+    }
+
+    if (ticket.status === 'PAID') {
+      setStatus(true);
+    }
+  }, []);
 
   return (
-    <StyledPayment status={status !== false ? 'none' : 'initial'}>
+    <StyledPayment>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <StyledTypography variant="h6" color="textSecondary">
         Ingresso escolhido
       </StyledTypography>
       <Box>
-        <span>Presencial + Com Hotel</span>
-        <p>R$ 600</p>
+        <span>{isRemote === false ? 'Presencial' : 'Online'} {includesHotel === false ? '' : '+ Com Hotel'}</span>
+        <p>R$ {ticketValue}</p>
       </Box>
       <StyledTypography variant="h6" color="textSecondary">
         Pagamento
       </StyledTypography>
-      <PaymentForm status={!status}/>
-      <button onClick={() => setStatus(!status)}>FINALIZAR PAGAMENTO</button>
-      <SuccessMessage status={status} />
+      <PaymentForm ticketId={ticketId} status={status} setStatus={setStatus} />
     </StyledPayment>
   );
 }
@@ -34,26 +51,7 @@ export default function PaymentInformation() {
 const StyledTypography = styled(Typography)`
   margin-bottom: 20px !important;
 `;
-const StyledPayment = styled.div`
-  button {
-    display: ${(props) => props.status};
-    width: 182px;
-    height: 37px;
-    background: #e0e0e0;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
-    border-radius: 4px;
-    border: thin;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-align: center;
-    color: #000000;
-    margin-top: 40px;
-    cursor: pointer;
-  }
-`;
+const StyledPayment = styled.div``;
 
 const Box = styled.div`
   width: 290px;

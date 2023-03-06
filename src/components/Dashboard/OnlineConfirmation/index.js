@@ -9,16 +9,17 @@ export default function OnlineConfirmation() {
   const { saveTicket } = useSaveTicket();
   const navigate = useNavigate();
 
-  function createTicketOnline() {
-    const ticketTypeOnline = ticketTypes?.filter((t) => t.isRemote === true);
+  async function createTicketOnline() {
+    const ticketTypeOnline = ticketTypes.filter((t) => t.isRemote === true);
 
-    const data = {
+    let data = {
       ticketTypeId: ticketTypeOnline[0].id,
     };
 
     try {
-      saveTicket(data);
+      await saveTicket(data);
       toast('Ticket reservado!');
+      navigate('/dashboard/payment/credit-card');
     } catch (error) {
       console.log(error);
     }
