@@ -9,20 +9,22 @@ import useEnrollment from '../../../hooks/api/useEnrollment';
 export default function Payment() {
   const [presencial, setPresencial] = useState(false);
   const [online, setOnline] = useState(false);
-  const [withHotel, setWithHotel] = useState(false);
-  const [withoutHotel, setWithoutHotel] = useState(false);
+  const [includesHotel, setIncludesHotel] = useState(false);
+  const [notIncludesHotel, setNotIncludesHotel] = useState(false);
+  const [typeOfTicket, setTypeOfTicket] = useState(''); 
   const { enrollment } = useEnrollment();
 
   return (
     <>
       {enrollment ? (
-        <TicketTypes presencial={presencial} setPresencial={setPresencial} online={online} setOnline={setOnline} />
+        <TicketTypes presencial={presencial} setPresencial={setPresencial} online={online} setOnline={setOnline} setTypeOfTicket={setTypeOfTicket} />
       ) : (
         <NoEnrollment />
       )}
-      {online ? <OnlineConfirmation /> : ''}
-      {presencial ? <AccommodationTypes withHotel={withHotel} setWithHotel={setWithHotel} withoutHotel={withoutHotel} setWithoutHotel={setWithoutHotel}/> : ''}
-      {}
+      {online ? <OnlineConfirmation typeOfTicket={typeOfTicket}/> : ''}
+      {presencial ? <AccommodationTypes includesHotel={includesHotel} setIncludesHotel={setIncludesHotel} notIncludesHotel={notIncludesHotel} setNotIncludesHotel={setNotIncludesHotel} typeOfTicket={typeOfTicket} setTypeOfTicket={setTypeOfTicket}/> : ''}
+      {presencial && includesHotel ? <OnlineConfirmation typeOfTicket={typeOfTicket}/> : ''}
+      {presencial && notIncludesHotel ? <OnlineConfirmation typeOfTicket={typeOfTicket}/> : ''}
     </>
   );
 }

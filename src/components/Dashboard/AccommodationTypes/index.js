@@ -1,45 +1,42 @@
 import styled from 'styled-components';
 
-export default function AccommodationTypes({ withHotel, setWithHotel, withoutHotel, setWithoutHotel }) {
-  function selectWithHotel() {
-    if (!withHotel && !withoutHotel) {
-      setWithHotel(true);
+export default function AccommodationTypes({
+  includesHotel,
+  setIncludesHotel,
+  notIncludesHotel,
+  setNotIncludesHotel,
+  typeOfTicket,
+  setTypeOfTicket,
+}) {
+  const selectIncludesHotel = () => {
+    setIncludesHotel(!includesHotel);
+    setNotIncludesHotel(false);
+    if (typeOfTicket === 'includesHotel') {
+      setTypeOfTicket('');
+    } else {
+      setTypeOfTicket('includesHotel');
     }
+  };
 
-    if (!withHotel && withoutHotel) {
-      setWithHotel(true);
-      setWithoutHotel(false);
+  const selectnotIncludesHotel = () => {
+    setNotIncludesHotel(!notIncludesHotel);
+    setIncludesHotel(false);
+    if (typeOfTicket === 'notIncludesHotel') {
+      setTypeOfTicket('');
+    } else {
+      setTypeOfTicket('notIncludesHotel');
     }
-
-    if (withHotel && !withoutHotel) {
-      setWithHotel(false);
-    }
-  }
-
-  function selectWithoutHotel() {
-    if (!withHotel && !withoutHotel) {
-      setWithoutHotel(true);
-    }
-
-    if (withHotel && !withoutHotel) {
-      setWithHotel(false);
-      setWithoutHotel(true);
-    }
-
-    if (!withHotel && withoutHotel) {
-      setWithoutHotel(false);
-    }
-  }
+  };
 
   return (
     <>
       <Subtitle>Ótimo! Agora escolha sua modalidade de hospedagem</Subtitle>
       <Choices>
-        <Container clicked={withoutHotel} onClick={selectWithoutHotel}>
+        <Container clicked={notIncludesHotel} onClick={selectnotIncludesHotel}>
           <h2>Sem Hotel</h2>
           <p>+ R$ 0</p>
         </Container>
-        <Container clicked={withHotel} onClick={selectWithHotel}>
+        <Container clicked={includesHotel} onClick={selectIncludesHotel}>
           <h2>Com Hotel</h2>
           <p>+ R$ 350</p>
         </Container>
