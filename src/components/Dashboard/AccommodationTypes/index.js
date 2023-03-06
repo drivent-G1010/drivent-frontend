@@ -7,6 +7,8 @@ export default function AccommodationTypes({
   setNotIncludesHotel,
   typeOfTicket,
   setTypeOfTicket,
+  acommodationOptions,
+  valueWithoutHotel,
 }) {
   const selectIncludesHotel = () => {
     setIncludesHotel(!includesHotel);
@@ -28,18 +30,25 @@ export default function AccommodationTypes({
     }
   };
 
+  function Option(props) {
+    return (
+      <Container
+        clicked={props.type === 'Sem Hotel' ? notIncludesHotel : includesHotel}
+        onClick={props.type === 'Sem Hotel' ? selectnotIncludesHotel : selectIncludesHotel}
+      >
+        <h2>{props.type}</h2>
+        <p>+ R$ {props.value}</p>
+      </Container>
+    );
+  }
+
   return (
     <>
       <Subtitle>Ótimo! Agora escolha sua modalidade de hospedagem</Subtitle>
       <Choices>
-        <Container clicked={notIncludesHotel} onClick={selectnotIncludesHotel}>
-          <h2>Sem Hotel</h2>
-          <p>+ R$ 0</p>
-        </Container>
-        <Container clicked={includesHotel} onClick={selectIncludesHotel}>
-          <h2>Com Hotel</h2>
-          <p>+ R$ 350</p>
-        </Container>
+        {acommodationOptions.map((o, i) => (
+          <Option type={o.includesHotel === false ? 'Sem Hotel' : 'Com Hotel'} value={o.price - valueWithoutHotel} />
+        ))}
       </Choices>
     </>
   );
