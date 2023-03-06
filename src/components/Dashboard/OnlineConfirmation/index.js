@@ -3,7 +3,6 @@ import useSaveTicket from '../../../hooks/api/useSaveTicket';
 import useTicketTypes from '../../../hooks/api/useTicketTypes';
 import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
-// import Confirmation from './Confirmation';
 
 export default function OnlineConfirmation({ typeOfTicket }) {
   const { ticketTypes } = useTicketTypes();
