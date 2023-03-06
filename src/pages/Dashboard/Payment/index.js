@@ -17,7 +17,14 @@ export default function Payment() {
 
   useEffect(async() => {
     const ticket = await getticket();
+
+    if (!ticket) {
+      return;
+    }
+
     if (ticket.status === 'PAID') {
+      navigate('/dashboard/payment/credit-card');
+    } else {
       navigate('/dashboard/payment/credit-card');
     }
   }, []);

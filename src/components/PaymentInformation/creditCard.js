@@ -36,6 +36,7 @@ export default function PaymentForm({ ticketId, status, setStatus }) {
         toast('Pagamento concluido com sucesso!');
         setStatus(true);
       } catch (error) {
+        console.log(error);
         toast('Não foi possível concluir o pagamento!');
       }
     }

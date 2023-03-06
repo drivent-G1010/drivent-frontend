@@ -2,27 +2,28 @@ import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import PaymentForm from './creditCard';
-import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import useTicket from '../../hooks/api/useTicket';
 
 export default function PaymentInformation() {
-  const { ticketId } = useParams();
   const { getticket } = useTicket();
   const [status, setStatus] = useState(false);
   const [ticketValue, setTicketValue] = useState('');
   const [isRemote, setIsRemote] = useState('');
   const [includesHotel, setIncludesHotel] = useState('');
+  const [ticketId, setTicketId] = useState();
 
   useEffect(async() => {
     const ticket = await getticket();
 
+    console.log(ticket);
     if (!ticket) {
       return;
     } else {
       setTicketValue(ticket.TicketType.price);
       setIsRemote(ticket.TicketType.isRemote);
       setIncludesHotel(ticket.TicketType.includesHotel);
+      setTicketId(ticket.id);
     }
 
     if (ticket.status === 'PAID') {
@@ -37,7 +38,9 @@ export default function PaymentInformation() {
         Ingresso escolhido
       </StyledTypography>
       <Box>
-        <span>{isRemote === false ? 'Presencial' : 'Online'} {includesHotel === false ? '' : '+ Com Hotel'}</span>
+        <span>
+          {isRemote === false ? 'Presencial' : 'Online'} {includesHotel === false ? '' : '+ Com Hotel'}
+        </span>
         <p>R$ {ticketValue}</p>
       </Box>
       <StyledTypography variant="h6" color="textSecondary">
