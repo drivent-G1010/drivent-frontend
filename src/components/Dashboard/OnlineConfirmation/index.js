@@ -1,15 +1,35 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useSaveTicket from '../../../hooks/api/useSaveTicket';
+import useTicketTypes from '../../../hooks/api/useTicketTypes';
+import { toast } from 'react-toastify';
 
 export default function OnlineConfirmation() {
+  const { ticketTypes } = useTicketTypes();
+  const { saveTicket } = useSaveTicket();
   const navigate = useNavigate();
+
+  function createTicketOnline() {
+    const ticketTypeOnline = ticketTypes?.filter((t) => t.isRemote === true);
+
+    const data = {
+      ticketTypeId: ticketTypeOnline[0].id,
+    };
+
+    try {
+      saveTicket(data);
+      toast('Ticket reservado!');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <ConfirmationOnline>
       <p>
         Fechado! O total ficou em <span>R$ 100</span>. Agora é só confirmar:
       </p>
-      <Button onClick={() => navigate('/dashboard/payment/credit-card')}>RESERVAR INGRESSO</Button>
+      <Button onClick={createTicketOnline}>RESERVAR INGRESSO</Button>
     </ConfirmationOnline>
   );
 }

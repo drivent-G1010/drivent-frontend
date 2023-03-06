@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import NoEnrollment from '../../../components/Dashboard/NoEnrollment';
 import OnlineConfirmation from '../../../components/Dashboard/OnlineConfirmation';
-import TicketTypes from '../../../components/Dashboard/Payment';
+import TicketTypes from '../../../components/Dashboard/TicketTypes';
+
 import useEnrollment from '../../../hooks/api/useEnrollment';
 
 export default function Payment() {
