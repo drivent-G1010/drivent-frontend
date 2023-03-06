@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ConfirmPayment from '../../../components/Dashboard/ConfirmPayment';
 import NoEnrollment from '../../../components/Dashboard/NoEnrollment';
 import OnlineConfirmation from '../../../components/Dashboard/OnlineConfirmation';
 import TicketTypes from '../../../components/Dashboard/TicketTypes';
