@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default function TicketTypes({ presencial, setPresencial, online, setOnline }) {
+export default function TicketTypes({ presencial, setPresencial, online, setOnline, setTypeOfTicket }) {
   function selectPresencial() {
     if (!presencial && !online) {
       setPresencial(true);
@@ -13,17 +13,19 @@ export default function TicketTypes({ presencial, setPresencial, online, setOnli
 
     if (presencial && !online) {
       setPresencial(false);
-    }
+    };
   }
 
   function selectOnline() {
     if (!presencial && !online) {
       setOnline(true);
+      setTypeOfTicket('online');
     }
 
     if (presencial && !online) {
       setPresencial(false);
       setOnline(true);
+      setTypeOfTicket('online');
     }
 
     if (!presencial && online) {
