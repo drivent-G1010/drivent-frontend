@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useTicketTypes from '../../../hooks/api/useTicketTypes';
 
-export default function TicketTypes({ presencial, setPresencial, online, setOnline }) {
+export default function TicketTypes({ presencial, setPresencial, online, setOnline, setTypeOfTicket, options }) {
   function selectPresencial() {
     if (!presencial && !online) {
       setPresencial(true);
@@ -19,16 +21,30 @@ export default function TicketTypes({ presencial, setPresencial, online, setOnli
   function selectOnline() {
     if (!presencial && !online) {
       setOnline(true);
+      setTypeOfTicket('online');
     }
 
     if (presencial && !online) {
       setPresencial(false);
       setOnline(true);
+      setTypeOfTicket('online');
     }
 
     if (!presencial && online) {
       setOnline(false);
     }
+  }
+
+  function Option(props) {
+    return (
+      <Container
+        clicked={props.type === 'Presencial' ? presencial : online}
+        onClick={props.type === 'Presencial' ? selectPresencial : selectOnline}
+      >
+        <h2>{props.type}</h2>
+        <p>R$ {props.value}</p>
+      </Container>
+    );
   }
 
   return (
@@ -37,14 +53,9 @@ export default function TicketTypes({ presencial, setPresencial, online, setOnli
         <TitlePage>Ingresso e pagamento</TitlePage>
         <Subtitle>Primeiro, escolha sua modalidade de ingresso</Subtitle>
         <Choices>
-          <Container clicked={presencial} onClick={selectPresencial}>
-            <h2>Presencial</h2>
-            <p>R$ 250</p>
-          </Container>
-          <Container clicked={online} onClick={selectOnline}>
-            <h2>Online</h2>
-            <p>R$ 100</p>
-          </Container>
+          {options.map((o, i) => (
+            <Option type={o.isRemote === false ? 'Presencial' : 'Online'} value={o.price} />
+          ))}
         </Choices>
       </DashbordaArea>
     </>
