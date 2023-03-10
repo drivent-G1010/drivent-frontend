@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useTicketTypes from '../../../hooks/api/useTicketTypes';
 
 export default function TicketTypes({ presencial, setPresencial, online, setOnline, setTypeOfTicket, options }) {
   function selectPresencial() {

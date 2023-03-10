@@ -1,12 +1,13 @@
-import React from 'react';
-import { useState } from 'react';
-import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
-import styled from 'styled-components';
+
+import Cards from 'react-credit-cards';
 import { DebounceInput } from 'react-debounce-input';
-import useSavePayment from '../../hooks/api/useSavePayment';
-import { toast } from 'react-toastify';
+import React from 'react';
 import SuccessMessage from './successMsg';
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import useSavePayment from '../../hooks/api/useSavePayment';
+import { useState } from 'react';
 
 export default function PaymentForm({ ticketId, status, setStatus }) {
   const [focus, setFocus] = useState('');
@@ -36,7 +37,7 @@ export default function PaymentForm({ ticketId, status, setStatus }) {
         toast('Pagamento concluido com sucesso!');
         setStatus(true);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         toast('Não foi possível concluir o pagamento!');
       }
     }
