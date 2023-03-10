@@ -1,5 +1,3 @@
-import { IoPerson, IoPersonOutline } from 'react-icons/io5';
-
 import NotIncludesHotel from '../../../components/Dashboard/NotIncludesHotel';
 import PaymenteRequired from '../../../components/Dashboard/PaymentRequired';
 import styled from 'styled-components';
@@ -107,32 +105,6 @@ const Hotels = styled.div`
     h4 {
       margin-top: 10px;
       font-weight: 700;
-    }
-  }
-`;
-
-const Rooms = styled.div`
-  display: flex;
-  margin-bottom: 45px;
-
-  button {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 190px;
-    height: 45px;
-    margin: 15px 20px 0 0;
-    border: ${(props) => (props.clicked ? '' : '1px solid #cecece')};
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: ${(props) => (props.clicked ? '#feeed2' : '#ffffff')};
-    font-size: 20px;
-    font-weight: 700;
-    color: #454545;
-    padding: 0 15px;
-    div {
-      color: #000;
-      font-size: 21px;
     }
   }
 `;
