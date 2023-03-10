@@ -1,7 +1,7 @@
 import 'react-credit-cards/es/styles-compiled.css';
 
 import Cards from 'react-credit-cards';
-import { DebounceInput } from 'react-debounce-input';
+import InputMask from 'react-input-mask';
 import React from 'react';
 import SuccessMessage from './successMsg';
 import styled from 'styled-components';
@@ -49,9 +49,8 @@ export default function PaymentForm({ ticketId, status, setStatus }) {
         <Cards cvc={cvc} expiry={expiry} focused={focus} name={name} number={number} issuer={'visa'} />
         <InputsCreditCard>
           <form className="initial">
-            <DebounceInput
-              minLength={1}
-              debounceTimeout={0}
+            <input
+              maxLength={'16'}
               value={number}
               id="input-number"
               type="tel"
@@ -64,6 +63,7 @@ export default function PaymentForm({ ticketId, status, setStatus }) {
             />
             <p>E.g.: 49..., 51..., 36..., 37... {Cards}</p>
             <input
+              maxLength={'50'}
               id="input-name"
               type="tel"
               name="name"
@@ -75,7 +75,10 @@ export default function PaymentForm({ ticketId, status, setStatus }) {
             />
           </form>
           <form className="final">
-            <input
+            <InputMask
+              mask="99/99"
+              maskChar={null}
+              maxLength={'5'}
               id="input-valid"
               type="tel"
               name="expiry"
@@ -84,8 +87,10 @@ export default function PaymentForm({ ticketId, status, setStatus }) {
                 setExpiry(e.target.value);
               }}
               onFocus={() => setFocus('expiry')}
+              disableUnderline
             />
             <input
+              maxLength={'3'}
               id="input-cvc"
               type="tel"
               name="cvc"
