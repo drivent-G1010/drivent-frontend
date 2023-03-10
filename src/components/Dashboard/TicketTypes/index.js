@@ -49,7 +49,7 @@ export default function TicketTypes({ presencial, setPresencial, online, setOnli
 
   return (
     <>
-      <DashbordaArea>
+      <DashbordArea>
         <TitlePage>Ingresso e pagamento</TitlePage>
         <Subtitle>Primeiro, escolha sua modalidade de ingresso</Subtitle>
         <Choices>
@@ -57,12 +57,12 @@ export default function TicketTypes({ presencial, setPresencial, online, setOnli
             <Option type={o.isRemote === false ? 'Presencial' : 'Online'} value={o.price} />
           ))}
         </Choices>
-      </DashbordaArea>
+      </DashbordArea>
     </>
   );
 }
 
-const DashbordaArea = styled.div`
+const DashbordArea = styled.div`
   font-family: 'Roboto', sans-serif;
 `;
 
