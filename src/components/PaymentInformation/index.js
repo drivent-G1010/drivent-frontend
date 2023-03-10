@@ -1,7 +1,8 @@
-import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
+
 import PaymentForm from './creditCard';
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
 import { useEffect } from 'react';
 import useTicket from '../../hooks/api/useTicket';
 
@@ -13,10 +14,10 @@ export default function PaymentInformation() {
   const [includesHotel, setIncludesHotel] = useState('');
   const [ticketId, setTicketId] = useState();
 
-  useEffect(async() => {
+  // eslint-disable-next-line space-before-function-paren
+  useEffect(async () => {
     const ticket = await getticket();
 
-    console.log(ticket);
     if (!ticket) {
       return;
     } else {
