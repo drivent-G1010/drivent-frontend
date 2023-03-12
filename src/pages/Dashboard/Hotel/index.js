@@ -67,7 +67,7 @@ export default function Hotel() {
         ''
       )}
 
-      <HotelsSummary hotels={hotels} />
+      {/* <HotelsSummary hotels={hotels} /> */}
 
     </HotelContainer>
   );
