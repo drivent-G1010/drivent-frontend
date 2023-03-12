@@ -46,33 +46,33 @@ const SingleHotel = styled.div`
   justify-content: center;
   width: 196px;
   height: 264px;
-  padding: 15px;
   margin: 15px 20px 0 0;
+  padding: 15px;
   border: ${(props) => (props.clicked === 'true' ? '1px solid #000000' : '1px solid #cecece')};
   border-radius: 10px;
   cursor: pointer;
   background-color: ${(props) => (props.clicked === 'true' ? '#feeed2' : '#ebebeb')};
-
+  :hover {
+    border: 1px solid ${(props) => (props.clicked === 'true' ? '#000000' : '#a6a6a6')};
+    background-color: ${(props) => (props.clicked === 'true' ? '#feeed2' : '#cccccc')};
+  }
   img {
     width: 168px;
     height: 109px;
+    margin: 0 auto 10px auto;
     border-radius: 5px;
     object-fit: cover;
-    margin: 0 auto 10px auto;
   }
-
   h3 {
-    font-size: 20px;
     color: #343434;
+    font-size: 20px;
   }
-
   h4,
   p {
-    font-size: 12px;
     color: #3c3c3c;
+    font-size: 12px;
     line-height: 16px;
   }
-
   h4 {
     margin-top: 10px;
     font-weight: 700;
