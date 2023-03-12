@@ -13,12 +13,12 @@ export default function RoomCapacity({ room, isClickable, onClick, isSelected })
     }
   } else {
     if (isSelected) {
-      iconArray.push(<Icon key={0} color="pink"><ion-icon name="person"></ion-icon></Icon>);
-      for (let k = 1; k < room.Booking.length; k++) {
-        iconArray.push(<Icon key={k} color="black"><ion-icon name="person"></ion-icon></Icon>);
-      }
-      for (let j = 1; j < room.capacity - room.Booking.length; j++) {
+      for (let j = room.Booking.length; j < room.capacity -1; j++) {
         iconArray.push(<Icon key={j} color="black"><ion-icon name="person-outline"></ion-icon></Icon>);
+      }
+      iconArray.push(<Icon key={0} color="pink"><ion-icon name="person"></ion-icon></Icon>);
+      for (let k = 1; k < room.Booking.length +1; k++) {
+        iconArray.push(<Icon key={k} color="black"><ion-icon name="person"></ion-icon></Icon>);
       }
     } else {
       for (let j = room.Booking.length; j < room.capacity; j++) {
