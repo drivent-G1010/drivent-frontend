@@ -1,9 +1,17 @@
 import styled from 'styled-components';
 
-export function HotelsSummary() {
+export function HotelsSummary({ hotels }) {
   return (
     <SummaryBox>
-      <SingleHotel></SingleHotel>
+      <h2>Você já escolheu seu quarto:</h2>
+      <SingleHotel>
+        <img src={hotels[0].image} alt="HotelImg" />
+        <h3>{hotels[0].name}</h3>
+        <h4>Quarto reservado</h4>
+        <p>101 (Double)</p>
+        <h4>Pessoas no seu quarto</h4>
+        <p>Você e mais 1</p>
+      </SingleHotel>
       <button>TROCAR DE QUARTO</button>
     </SummaryBox>
   );
@@ -22,6 +30,9 @@ const SummaryBox = styled.div`
     height: 37px;
     margin-top: 38px;
     cursor: pointer;
+    :hover {
+      transform: scale(1.03);
+    }
   }
 `;
 
