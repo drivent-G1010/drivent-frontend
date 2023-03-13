@@ -30,12 +30,13 @@ export default function Hotel() {
     if (resIncludesHotel === true && resStatus !== 'PAID') {
       setPaymentRequired(true);
     } else {
-      const hotelList = await getHotel();
       const booking = await getbooking();
 
       if (booking) {
         setAccommodation({ hotelId: booking.Room.hotelId, room: booking.Room });
       }
+
+      const hotelList = await getHotel();
 
       if (!hotelList) return;
 
@@ -52,7 +53,7 @@ export default function Hotel() {
 
       setHotels(hotelsWithTotalCapacity);
     }
-  }, [accommodation]);
+  }, []);
 
   if (!includesHotel) {
     return <NotIncludesHotel />;
