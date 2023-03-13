@@ -1,16 +1,29 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import RoomCapacity from './RoomCapacity';
+import useSavebooking from '../../../hooks/api/useSaveBooking';
+import { useNavigate } from 'react-router-dom';
 
 export default function Room({ accommodation, setAccommodation, hotels }) {
   const selectedHotel = hotels.find((hotel) => hotel.id === accommodation.hotelId);
   const rooms = selectedHotel.rooms;
-
+  const navigate = useNavigate();
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const { postSaveBooking, saveBookingLoading } = useSavebooking();
 
   const handleRoomClick = (room) => {
     setSelectedRoom(room.id === selectedRoom?.id ? null : room);
   };
+
+  async function sendBooking(roomId) {
+    try {
+      const res = await postSaveBooking(roomId);
+      console.log(res);
+      // navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <Container>
@@ -18,8 +31,8 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
       <RoomBox>
         {rooms.map((room, i) => {
           const isSelected = selectedRoom?.id === room.id;
-          const isFull = room.capacity === room.Booking.length;
-          const canSelect = room.Booking.length < room.capacity;
+          const isFull = room.capacity === room.Booking?.length;
+          const canSelect = room.Booking?.length || 0 < room.capacity;
           return (
             <SingleRoom
               key={room.id}
@@ -29,12 +42,12 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
               canSelect={canSelect}
             >
               <h3>{room.name}</h3>
-              <RoomCapacity room={room} isSelected={isSelected}/>
+              <RoomCapacity room={room} isSelected={isSelected} />
             </SingleRoom>
           );
         })}
       </RoomBox>
-      <Button onClick={() => setAccommodation({ ...accommodation, roomId: selectedRoom })}>RESERVAR QUARTO</Button>
+      <Button disabled={saveBookingLoading} onClick={() => sendBooking(selectedRoom.id)}>RESERVAR QUARTO</Button>
     </Container>
   );
 }
@@ -70,15 +83,16 @@ const SingleRoom = styled.div`
 `;
 
 const Button = styled.button`
-width: 182px;
-height: 37px;
-background: #E0E0E0;
-box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
-border-radius: 4px;
-border: none;
-margin-top: 40px;
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
+  width: 182px;
+  height: 37px;
+  background: #e0e0e0;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  border: none;
+  margin-top: 40px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
 `;
