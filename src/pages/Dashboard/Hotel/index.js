@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import useHotels from '../../../hooks/api/useHotels';
 import { useState } from 'react';
 import useTicket from '../../../hooks/api/useTicket';
-import Room from '../../../components/Dashboard/AccommodationSelection/Room';
 
 export default function Hotel() {
   const [includesHotel, setIncludesHotel] = useState(undefined);
@@ -15,7 +14,7 @@ export default function Hotel() {
   const { getHotel } = useHotels();
   const [paymentRequired, setPaymentRequired] = useState(undefined);
   const [hotels, setHotels] = useState([]);
-  const [accommodation, setAccommodation] = useState({ hotelId: '', roomId: '' });
+  const [accommodation, setAccommodation] = useState({ hotelId: undefined, room: undefined });
 
   // eslint-disable-next-line space-before-function-paren
   useEffect(async () => {
@@ -61,14 +60,7 @@ export default function Hotel() {
       <h1>Escolha de hotel e quarto</h1>
       <Hotels hotels={hotels} accommodation={accommodation} setAccommodation={setAccommodation} />
 
-      {accommodation.hotelId !== '' ? (
-        <Room hotels={hotels} accommodation={accommodation} setAccommodation={setAccommodation} />
-      ) : (
-        ''
-      )}
-
-      {/* <HotelsSummary hotels={hotels} /> */}
-
+      <HotelsSummary hotels={hotels} accommodation={accommodation} />
     </HotelContainer>
   );
 }

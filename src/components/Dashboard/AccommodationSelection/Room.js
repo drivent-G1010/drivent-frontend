@@ -1,10 +1,10 @@
+import RoomCapacity from './RoomCapacity';
 import styled from 'styled-components';
 import { useState } from 'react';
-import RoomCapacity from './RoomCapacity';
 
 export default function Room({ accommodation, setAccommodation, hotels }) {
   const selectedHotel = hotels.find((hotel) => hotel.id === accommodation.hotelId);
-  const rooms = selectedHotel.rooms;
+  const rooms = selectedHotel?.rooms;
 
   const [selectedRoom, setSelectedRoom] = useState(null);
 
@@ -16,7 +16,7 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
     <Container>
       <h2>Ótima pedida! Agora escolha seu quarto</h2>
       <RoomBox>
-        {rooms.map((room, i) => {
+        {rooms?.map((room, i) => {
           const isSelected = selectedRoom?.id === room.id;
           const isFull = room.capacity === room.Booking.length;
           const canSelect = room.Booking.length < room.capacity;
@@ -29,12 +29,12 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
               canSelect={canSelect}
             >
               <h3>{room.name}</h3>
-              <RoomCapacity room={room} isSelected={isSelected}/>
+              <RoomCapacity room={room} isSelected={isSelected} />
             </SingleRoom>
           );
         })}
       </RoomBox>
-      <Button onClick={() => setAccommodation({ ...accommodation, roomId: selectedRoom })}>RESERVAR QUARTO</Button>
+      <Button onClick={() => setAccommodation({ ...accommodation, room: selectedRoom })}>RESERVAR QUARTO</Button>
     </Container>
   );
 }
@@ -70,15 +70,19 @@ const SingleRoom = styled.div`
 `;
 
 const Button = styled.button`
-width: 182px;
-height: 37px;
-background: #E0E0E0;
-box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
-border-radius: 4px;
-border: none;
-margin-top: 40px;
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
+  width: 182px;
+  height: 37px;
+  background: #e0e0e0;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  border: none;
+  margin-top: 40px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  :hover {
+    transform: scale(1.03);
+  }
 `;
