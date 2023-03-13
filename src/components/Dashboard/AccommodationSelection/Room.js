@@ -1,15 +1,17 @@
-import RoomCapacity from './RoomCapacity';
+import RoomCapacity from '../AccommodationTypes/RoomCapacity';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useSavebooking from '../../../hooks/api/useSaveBooking';
 import { useState } from 'react';
+import usebooking from '../../../hooks/api/useBooking';
 
 export default function Room({ accommodation, setAccommodation, hotels }) {
   const selectedHotel = hotels.find((hotel) => hotel.id === accommodation.hotelId);
   const rooms = selectedHotel?.rooms;
-  const navigate = useNavigate();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const { postSaveBooking, saveBookingLoading } = useSavebooking();
+  const { putBooking, bookingLoading } = usebooking();
+  let bookingId = (JSON.parse(localStorage.getItem('bookingIdLocal')))?.bookingId;
 
   const handleRoomClick = (room) => {
     setSelectedRoom(room.id === selectedRoom?.id ? null : room);
@@ -19,8 +21,17 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
     try {
       const res = await postSaveBooking(roomId);
       setAccommodation({ ...accommodation, room: selectedRoom });
-      console.log(res);
-      // navigate('/');
+      localStorage.setItem('bookingIdLocal', JSON.stringify(res));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function changeBooking(roomId) {
+    try {
+      const res = await putBooking(bookingId, roomId);
+      setAccommodation({ ...accommodation, room: selectedRoom });
+      localStorage.setItem('bookingIdLocal', JSON.stringify(res));
     } catch (err) {
       console.log(err);
     }
@@ -48,7 +59,7 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
           );
         })}
       </RoomBox>
-      <Button disabled={saveBookingLoading} onClick={() => sendBooking(selectedRoom.id)}>
+      <Button onClick={() => (!bookingId ? sendBooking(selectedRoom.id) : changeBooking(selectedRoom.id))}>
         RESERVAR QUARTO
       </Button>
     </Container>
