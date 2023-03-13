@@ -1,8 +1,9 @@
+import Room from './Room';
 import styled from 'styled-components';
 
 export function Hotels({ accommodation, setAccommodation, hotels }) {
   return (
-    <>
+    <Container hide={accommodation.room ? 'true' : 'false'}>
       <h2>Primeiro escolha seu hotel</h2>
       <HotelsBox>
         {hotels.map((hotel) => {
@@ -28,10 +29,20 @@ export function Hotels({ accommodation, setAccommodation, hotels }) {
             </SingleHotel>
           );
         })}
+
+        {accommodation.hotelId ? (
+          <Room hotels={hotels} accommodation={accommodation} setAccommodation={setAccommodation} />
+        ) : (
+          ''
+        )}
       </HotelsBox>
-    </>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: ${(props) => (props.hide === 'true' ? 'none' : 'initial')};
+`;
 
 const HotelsBox = styled.div`
   display: flex;

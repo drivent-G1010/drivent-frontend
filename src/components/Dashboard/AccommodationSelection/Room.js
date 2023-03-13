@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import { useState } from 'react';
 import RoomCapacity from './RoomCapacity';
-import useSavebooking from '../../../hooks/api/useSaveBooking';
+import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import useSavebooking from '../../../hooks/api/useSaveBooking';
+import { useState } from 'react';
 
 export default function Room({ accommodation, setAccommodation, hotels }) {
   const selectedHotel = hotels.find((hotel) => hotel.id === accommodation.hotelId);
-  const rooms = selectedHotel.rooms;
+  const rooms = selectedHotel?.rooms;
   const navigate = useNavigate();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const { postSaveBooking, saveBookingLoading } = useSavebooking();
@@ -18,6 +18,7 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
   async function sendBooking(roomId) {
     try {
       const res = await postSaveBooking(roomId);
+      setAccommodation({ ...accommodation, room: selectedRoom });
       console.log(res);
       // navigate('/');
     } catch (err) {
@@ -29,7 +30,7 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
     <Container>
       <h2>Ótima pedida! Agora escolha seu quarto</h2>
       <RoomBox>
-        {rooms.map((room, i) => {
+        {rooms?.map((room, i) => {
           const isSelected = selectedRoom?.id === room.id;
           const isFull = room.capacity === room.Booking?.length;
           const canSelect = room.Booking?.length || 0 < room.capacity;
@@ -47,7 +48,9 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
           );
         })}
       </RoomBox>
-      <Button disabled={saveBookingLoading} onClick={() => sendBooking(selectedRoom.id)}>RESERVAR QUARTO</Button>
+      <Button disabled={saveBookingLoading} onClick={() => sendBooking(selectedRoom.id)}>
+        RESERVAR QUARTO
+      </Button>
     </Container>
   );
 }
@@ -95,4 +98,7 @@ const Button = styled.button`
   font-weight: 400;
   font-size: 14px;
   cursor: pointer;
+  :hover {
+    transform: scale(1.03);
+  }
 `;

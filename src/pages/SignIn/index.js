@@ -1,17 +1,14 @@
-import { useState, useContext } from 'react';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Label, Row, Title } from '../../components/Auth';
+import { useContext, useState } from 'react';
 
 import AuthLayout from '../../layouts/Auth';
-
-import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
-import Link from '../../components/Link';
-import { Row, Title, Label } from '../../components/Auth';
-
 import EventInfoContext from '../../contexts/EventInfoContext';
+import Input from '../../components/Form/Input';
+import Link from '../../components/Link';
 import UserContext from '../../contexts/UserContext';
-
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import useSignIn from '../../hooks/api/useSignIn';
 
 export default function SignIn() {
@@ -24,7 +21,7 @@ export default function SignIn() {
   const { setUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
-  
+
   async function submit(event) {
     event.preventDefault();
 
@@ -36,10 +33,10 @@ export default function SignIn() {
     } catch (err) {
       toast('Não foi possível fazer o login!');
     }
-  } 
+  }
 
   return (
-    <AuthLayout >
+    <AuthLayout>
       <Row>
         <img src={eventInfo.logoImageUrl} alt="Event Logo" width="60px" />
         <Title>{eventInfo.title}</Title>
@@ -47,9 +44,17 @@ export default function SignIn() {
       <Row>
         <Label>Entrar</Label>
         <form onSubmit={submit}>
-          <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
-          <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
-          <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
+          <Input label="E-mail" type="text" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input
+            label="Senha"
+            type="password"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>
+            Entrar
+          </Button>
         </form>
       </Row>
       <Row>

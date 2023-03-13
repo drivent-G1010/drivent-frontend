@@ -1,16 +1,22 @@
+/* eslint-disable indent */
 import styled from 'styled-components';
 
-export function HotelsSummary({ hotels }) {
+export function HotelsSummary({ hotels, accommodation }) {
+  const hotelInfo = hotels?.filter((hotel) => hotel.id === accommodation.hotelId);
+  const { room } = accommodation;
+
   return (
-    <SummaryBox>
+    <SummaryBox hide={accommodation.room ? 'false' : 'true'}>
       <h2>Você já escolheu seu quarto:</h2>
       <SingleHotel>
-        <img src={hotels[0].image} alt="HotelImg" />
-        <h3>{hotels[0].name}</h3>
+        <img src={hotelInfo[0]?.image} alt="HotelImg" />
+        <h3>{hotelInfo[0]?.name}</h3>
         <h4>Quarto reservado</h4>
-        <p>101 (Double)</p>
+        <p>
+          {room?.name} ({room?.capacity === 1 ? 'Single' : room?.capacity === 2 ? 'Double' : 'Triple'})
+        </p>
         <h4>Pessoas no seu quarto</h4>
-        <p>Você e mais 1</p>
+        <p>{room?.Booking?.length === 0 ? 'Somente você' : `Você e mais ${room?.Booking?.length}`}</p>
       </SingleHotel>
       <button>TROCAR DE QUARTO</button>
     </SummaryBox>
@@ -18,7 +24,7 @@ export function HotelsSummary({ hotels }) {
 }
 
 const SummaryBox = styled.div`
-  display: flex;
+  display: ${(props) => (props.hide === 'true' ? 'none' : 'flex')};
   flex-direction: column;
   button {
     background-color: #e0e0e0;
@@ -44,10 +50,9 @@ const SingleHotel = styled.div`
   height: 264px;
   padding: 15px;
   margin: 15px 20px 0 0;
-  border: ${(props) => (props.clicked === 'true' ? '1px solid #000000' : '1px solid #cecece')};
+
   border-radius: 10px;
-  cursor: pointer;
-  background-color: ${(props) => (props.clicked === 'true' ? '#feeed2' : '#ebebeb')};
+  background-color: #feeed2;
 
   img {
     width: 168px;
