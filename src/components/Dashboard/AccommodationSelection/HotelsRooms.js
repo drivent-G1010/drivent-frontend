@@ -29,13 +29,12 @@ export function Hotels({ accommodation, setAccommodation, hotels }) {
             </SingleHotel>
           );
         })}
-
-        {accommodation.hotelId ? (
-          <Room hotels={hotels} accommodation={accommodation} setAccommodation={setAccommodation} />
-        ) : (
-          ''
-        )}
       </HotelsBox>
+      {accommodation.hotelId ? (
+        <Room hotels={hotels} accommodation={accommodation} setAccommodation={setAccommodation} />
+      ) : (
+        ''
+      )}
     </Container>
   );
 }
