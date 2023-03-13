@@ -18,6 +18,7 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
   async function sendBooking(roomId) {
     try {
       const res = await postSaveBooking(roomId);
+      setAccommodation({ ...accommodation, room: selectedRoom });
       console.log(res);
       // navigate('/');
     } catch (err) {
