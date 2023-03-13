@@ -12,10 +12,14 @@ export default function useGetBooking() {
     act: getbooking,
   } = useAsync(() => getBooking(token));
 
-  return {
-    booking,
-    getBookingLoading,
-    getBookingError,
-    getbooking,
-  };
+  if (booking) {
+    return {
+      booking,
+      getBookingLoading,
+      getBookingError,
+      getbooking,
+    };
+  } else {
+    return { booking: null, getbooking: () => {} };
+  }
 }
