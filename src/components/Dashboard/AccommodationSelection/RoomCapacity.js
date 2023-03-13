@@ -5,26 +5,26 @@ export default function RoomCapacity({ room, isClickable, onClick, isSelected })
   const [selected, setSelected] = useState(false);
 
   let iconArray = [];
-  let grayIcons = room.capacity === room.Booking.length;
+  let grayIcons = room.capacity === room.Booking?.length;
 
   if (grayIcons) {
-    for (let j = 0; j < room.Booking.length; j++) {
+    for (let j = 0; j < room.Booking?.length; j++) {
       iconArray.push(<Icon key={j} color="gray"><ion-icon name="person"></ion-icon></Icon>);
     }
   } else {
     if (isSelected) {
-      for (let j = room.Booking.length; j < room.capacity -1; j++) {
+      for (let j = room.Booking?.length; j < room.capacity -1; j++) {
         iconArray.push(<Icon key={j} color="black"><ion-icon name="person-outline"></ion-icon></Icon>);
       }
       iconArray.push(<Icon key={0} color="pink"><ion-icon name="person"></ion-icon></Icon>);
-      for (let k = 1; k < room.Booking.length +1; k++) {
+      for (let k = 1; k < room.Booking?.length +1; k++) {
         iconArray.push(<Icon key={k} color="black"><ion-icon name="person"></ion-icon></Icon>);
       }
     } else {
-      for (let j = room.Booking.length; j < room.capacity; j++) {
+      for (let j = room.Booking?.length; j < room.capacity; j++) {
         iconArray.push(<Icon key={j} color="black"><ion-icon name="person-outline"></ion-icon></Icon>);
       }
-      for (let k = 0; k < room.Booking.length; k++) {
+      for (let k = 0; k < room.Booking?.length; k++) {
         iconArray.push(<Icon key={k} color="black"><ion-icon name="person"></ion-icon></Icon>);
       }
     }
