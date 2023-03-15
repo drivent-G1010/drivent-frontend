@@ -63,7 +63,7 @@ export default function Hotel() {
       <h1>Escolha de hotel e quarto</h1>
       <Hotels hotels={hotels} accommodation={accommodation} setAccommodation={setAccommodation} />
 
-      <HotelsSummary hotels={hotels} accommodation={accommodation} />
+      <HotelsSummary hotels={hotels} accommodation={accommodation} setAccommodation={setAccommodation}/>
     </HotelContainer>
   );
 }

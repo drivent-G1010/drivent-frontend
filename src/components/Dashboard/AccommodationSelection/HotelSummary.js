@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import styled from 'styled-components';
 
-export function HotelsSummary({ hotels, accommodation }) {
+export function HotelsSummary({ hotels, accommodation, setAccommodation }) {
   const hotelInfo = hotels?.filter((hotel) => hotel.id === accommodation.hotelId);
   const { room } = accommodation;
 
@@ -18,7 +18,13 @@ export function HotelsSummary({ hotels, accommodation }) {
         <h4>Pessoas no seu quarto</h4>
         <p>{room?.Booking?.length === 0 ? 'Somente você' : `Você e mais ${room?.Booking?.length}`}</p>
       </SingleHotel>
-      <button>TROCAR DE QUARTO</button>
+      <button
+        onClick={() => {
+          setAccommodation({ hotelId: undefined, room: undefined });
+        }}
+      >
+        TROCAR DE QUARTO
+      </button>
     </SummaryBox>
   );
 }
