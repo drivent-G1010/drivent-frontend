@@ -15,9 +15,13 @@ export default function Dashboard() {
 
   // eslint-disable-next-line space-before-function-paren
   useEffect(async () => {
-    const booking = await getbooking();
-    if (booking) {
-      setUserData({ ...userData, booking });
+    try {
+      const booking = await getbooking();
+      if (booking) {
+        setUserData({ ...userData, booking });
+      }
+    } catch {
+      setUserData({ ...userData, booking: undefined });
     }
   }, []);
 

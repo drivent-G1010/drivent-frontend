@@ -1,17 +1,35 @@
 import RoomCapacity from '../AccommodationTypes/RoomCapacity';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import useSavebooking from '../../../hooks/api/useSaveBooking';
 import { useState } from 'react';
 import usebooking from '../../../hooks/api/useBooking';
+import { useContext } from 'react';
+import UserContext from '../../../contexts/UserContext';
+import useGetBooking from '../../../hooks/api/useGetBooking';
+import { useEffect } from 'react';
 
 export default function Room({ accommodation, setAccommodation, hotels }) {
   const selectedHotel = hotels.find((hotel) => hotel.id === accommodation.hotelId);
   const rooms = selectedHotel?.rooms;
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const { postSaveBooking, saveBookingLoading } = useSavebooking();
-  const { putBooking, bookingLoading } = usebooking();
-  let bookingId = (JSON.parse(localStorage.getItem('bookingIdLocal')))?.bookingId;
+  const { postSaveBooking } = useSavebooking();
+  const { putBooking } = usebooking();
+  const { userData, setUserData } = useContext(UserContext);
+  let bookingId = userData.booking?.id;
+
+  const { getbooking } = useGetBooking();
+
+  // eslint-disable-next-line space-before-function-paren
+  useEffect(async () => {
+    try {
+      const booking = await getbooking();
+      if (booking) {
+        setUserData({ ...userData, booking });
+      }
+    } catch {
+      setUserData({ ...userData, booking: undefined });
+    }
+  }, []);
 
   const handleRoomClick = (room) => {
     setSelectedRoom(room.id === selectedRoom?.id ? null : room);
@@ -21,7 +39,6 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
     try {
       const res = await postSaveBooking(roomId);
       setAccommodation({ ...accommodation, room: selectedRoom });
-      localStorage.setItem('bookingIdLocal', JSON.stringify(res));
     } catch (err) {
       console.log(err);
     }
@@ -30,8 +47,16 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
   async function changeBooking(roomId) {
     try {
       const res = await putBooking(bookingId, roomId);
+      setUserData({ ...userData, booking: { ...userData.booking, roomId } });
       setAccommodation({ ...accommodation, room: selectedRoom });
-      localStorage.setItem('bookingIdLocal', JSON.stringify(res));
+      try {
+        const booking = await getbooking();
+        if (booking) {
+          setUserData({ ...userData, booking });
+        }
+      } catch {
+        setUserData({ ...userData, booking: undefined });
+      }
     } catch (err) {
       console.log(err);
     }
