@@ -1,12 +1,12 @@
 import RoomCapacity from '../AccommodationTypes/RoomCapacity';
+import UserContext from '../../../contexts/UserContext';
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { useEffect } from 'react';
+import useGetBooking from '../../../hooks/api/useGetBooking';
 import useSavebooking from '../../../hooks/api/useSaveBooking';
 import { useState } from 'react';
 import usebooking from '../../../hooks/api/useBooking';
-import { useContext } from 'react';
-import UserContext from '../../../contexts/UserContext';
-import useGetBooking from '../../../hooks/api/useGetBooking';
-import { useEffect } from 'react';
 
 export default function Room({ accommodation, setAccommodation, hotels }) {
   const selectedHotel = hotels.find((hotel) => hotel.id === accommodation.hotelId);
@@ -37,7 +37,7 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
 
   async function sendBooking(roomId) {
     try {
-      const res = await postSaveBooking(roomId);
+      await postSaveBooking(roomId);
       setAccommodation({ ...accommodation, room: selectedRoom });
     } catch (err) {
       console.log(err);
@@ -46,7 +46,7 @@ export default function Room({ accommodation, setAccommodation, hotels }) {
 
   async function changeBooking(roomId) {
     try {
-      const res = await putBooking(bookingId, roomId);
+      await putBooking(bookingId, roomId);
       setUserData({ ...userData, booking: { ...userData.booking, roomId } });
       setAccommodation({ ...accommodation, room: selectedRoom });
       try {
