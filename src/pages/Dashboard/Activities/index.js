@@ -7,11 +7,14 @@ import useTicket from '../../../hooks/api/useTicket';
 import Typography from '@material-ui/core/Typography';
 import Day from '../../../components/activities/day';
 import Location from '../../../components/activities/location';
+import useGetActivitiesDays from '../../../hooks/api/useGetActivitiesDays';
 
 export default function Activities() {
   const [includesHotel, setIncludesHotel] = useState(undefined);
   const { getticket } = useTicket();
+  const { getactivitiesDays } = useGetActivitiesDays();
   const [paymentRequired, setPaymentRequired] = useState(undefined);
+  const [activitiesDays, setActivitiesDays] = useState([]);
 
   useEffect(async() => {
     try {
@@ -29,6 +32,11 @@ export default function Activities() {
     }
   }, []);
 
+  useEffect(async() => {
+    const days = await getactivitiesDays();
+    setActivitiesDays(days);
+  }, []);
+
   if (paymentRequired) {
     return <PaymenteRequiredActivities />;
   }
@@ -37,15 +45,47 @@ export default function Activities() {
     return <NotIncludesHotelActivities />;
   }
 
+  function dayOfTheWeek(date) {
+    const weekDay = new Date(date).getDay();
+
+    if (weekDay === 6) {
+      return 'Domingo';
+    }
+    if (weekDay === 0) {
+      return 'Segunda';
+    }
+    if (weekDay === 1) {
+      return 'Terça';
+    }
+    if (weekDay === 2) {
+      return 'Quarta';
+    }
+    if (weekDay === 3) {
+      return 'Quinta';
+    }
+    if (weekDay === 4) {
+      return 'Sexta';
+    }
+    if (weekDay === 5) {
+      return 'Sabado';
+    }
+  }
+
+  function formatDate(date) {
+    return new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' }).slice(0, 5);
+  }
+
   return (
     <Container>
       <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
       <StyledTypography variant="h6" color="textSecondary">
         Primeiro, filtre pelo dia do evento:
       </StyledTypography>
-      <Day>Sexta, 22/10</Day>
-      <Day>Sexta, 22/10</Day>
-      <Day>Sexta, 22/10</Day>
+      {activitiesDays.map((d, i) => (
+        <Day key={i}>
+          {dayOfTheWeek(d)}, {formatDate(d)}
+        </Day>
+      ))}
       <div className="locations">
         <Location locationName={'Auditório Principal'}></Location>
         <Location locationName={'Auditório Principal 2'}></Location>

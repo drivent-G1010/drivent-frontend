@@ -13,6 +13,7 @@ const StyledMuiButton = styled(MuiButton)`
   margin-top: 8px !important;
   margin-right: 17px !important;
   background-color: ${props => props.color} !important;
+  text-transform: none !important;
 ;
   span {
     padding-left: 6px;
