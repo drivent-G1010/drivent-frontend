@@ -1,22 +1,28 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import styled from 'styled-components';
-import NotIncludesHotelActivities from '../../../components/Dashboard/NotIncludesHotel/activities';
-import PaymenteRequiredActivities from '../../../components/Dashboard/PaymentRequired/activities';
-import useTicket from '../../../hooks/api/useTicket';
-import Typography from '@material-ui/core/Typography';
+/* eslint-disable space-before-function-paren */
+
+import { useEffect, useState } from 'react';
+
 import Day from '../../../components/activities/day';
 import Location from '../../../components/activities/location';
+import NotIncludesHotelActivities from '../../../components/Dashboard/NotIncludesHotel/activities';
+import PaymenteRequiredActivities from '../../../components/Dashboard/PaymentRequired/activities';
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
+import useGetActivities from '../../../hooks/api/useGetActivities';
 import useGetActivitiesDays from '../../../hooks/api/useGetActivitiesDays';
+import useTicket from '../../../hooks/api/useTicket';
 
 export default function Activities() {
   const [includesHotel, setIncludesHotel] = useState(undefined);
   const { getticket } = useTicket();
   const { getactivitiesDays } = useGetActivitiesDays();
+  const { getActivities } = useGetActivities();
   const [paymentRequired, setPaymentRequired] = useState(undefined);
   const [activitiesDays, setActivitiesDays] = useState([]);
+  const [trails, setTrails] = useState([]);
+  const [registeredActivities, setRegisteredActivities] = useState([]);
 
-  useEffect(async() => {
+  useEffect(async () => {
     try {
       const ticket = await getticket();
       const resIncludesHotel = ticket.TicketType.includesHotel;
@@ -32,10 +38,15 @@ export default function Activities() {
     }
   }, []);
 
-  useEffect(async() => {
+  useEffect(async () => {
     const days = await getactivitiesDays();
     setActivitiesDays(days);
   }, []);
+
+  const selectDate = async (date) => {
+    const trails = await getActivities(date);
+    setTrails(trails);
+  };
 
   if (paymentRequired) {
     return <PaymenteRequiredActivities />;
@@ -75,21 +86,31 @@ export default function Activities() {
     return new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' }).slice(0, 5);
   }
 
+  function handleActivityRegistration(activityId) {
+    setRegisteredActivities([...registeredActivities, activityId]);
+  }
+
   return (
     <Container>
       <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
       <StyledTypography variant="h6" color="textSecondary">
         Primeiro, filtre pelo dia do evento:
       </StyledTypography>
-      {activitiesDays.map((d, i) => (
-        <Day key={i}>
-          {dayOfTheWeek(d)}, {formatDate(d)}
+      {activitiesDays?.map((day, i) => (
+        <Day key={i} onClick={() => selectDate(day)}>
+          {dayOfTheWeek(day)}, {formatDate(day)}
         </Day>
       ))}
       <div className="locations">
-        <Location locationName={'Auditório Principal'}></Location>
-        <Location locationName={'Auditório Principal 2'}></Location>
-        <Location locationName={'Auditório Principal 3'}></Location>
+        {trails.map((trail) => (
+          <Location
+            key={trail.id}
+            locationName={trail.name}
+            activities={trail.activities}
+            onActivityRegistration={handleActivityRegistration}
+            registeredActivities={registeredActivities}
+          ></Location>
+        ))}
       </div>
     </Container>
   );
