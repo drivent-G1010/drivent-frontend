@@ -2,7 +2,7 @@ import { joinActivity } from '../../services/activies';
 import useAsync from '../useAsync';
 import useToken from '../useToken';
 
-export default function useSavesaveActivities() {
+export default function useSaveActivities() {
   const token = useToken();
 
   const {
