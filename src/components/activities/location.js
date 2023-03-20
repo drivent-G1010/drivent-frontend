@@ -39,7 +39,7 @@ export default function Location({
     if (userBooked || registered) return 'inside';
 
     if (remainingVacancies === 0) {
-      return 'closed';
+      return 'close';
     } else {
       return 'open';
     }
@@ -82,7 +82,7 @@ const BoxLocation = styled.div`
     font-weight: 400;
     font-size: 17px;
     line-height: 20px;
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     text-align: center;
   }
   span {
@@ -104,7 +104,7 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 17px;
     line-height: 20px;
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
