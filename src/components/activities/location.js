@@ -11,7 +11,12 @@ export default function Location({
 }) {
   function formatTime(date) {
     const newDate = new Date(date);
-    const timeString = newDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+    const timeString = newDate.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'UTC',
+    });
     const time = timeString.substring(0, 5);
     return time;
   }
