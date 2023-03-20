@@ -1,20 +1,26 @@
+/* eslint-disable space-before-function-paren */
+
+import { useEffect, useState } from 'react';
+
 import Day from '../../../components/activities/day';
 import Location from '../../../components/activities/location';
 import NotIncludesHotelActivities from '../../../components/Dashboard/NotIncludesHotel/activities';
 import PaymenteRequiredActivities from '../../../components/Dashboard/PaymentRequired/activities';
 import Typography from '@material-ui/core/Typography';
-import Day from '../../../components/activities/day';
-import Location from '../../../components/activities/location';
+import styled from 'styled-components';
+import useGetActivities from '../../../hooks/api/useGetActivities';
 import useGetActivitiesDays from '../../../hooks/api/useGetActivitiesDays';
+import useTicket from '../../../hooks/api/useTicket';
 
 export default function Activities() {
   const [includesHotel, setIncludesHotel] = useState(undefined);
   const { getticket } = useTicket();
   const { getactivitiesDays } = useGetActivitiesDays();
+  const { getActivities } = useGetActivities();
   const [paymentRequired, setPaymentRequired] = useState(undefined);
   const [activitiesDays, setActivitiesDays] = useState([]);
+  const [trails, setTrails] = useState([]);
 
-  // eslint-disable-next-line space-before-function-paren
   useEffect(async () => {
     try {
       const ticket = await getticket();
@@ -35,6 +41,11 @@ export default function Activities() {
     const days = await getactivitiesDays();
     setActivitiesDays(days);
   }, []);
+
+  const selectDate = async (date) => {
+    const trails = await getActivities(date);
+    setTrails(trails);
+  };
 
   if (paymentRequired) {
     return <PaymenteRequiredActivities />;
@@ -80,15 +91,15 @@ export default function Activities() {
       <StyledTypography variant="h6" color="textSecondary">
         Primeiro, filtre pelo dia do evento:
       </StyledTypography>
-      {activitiesDays.map((d, i) => (
-        <Day key={i}>
-          {dayOfTheWeek(d)}, {formatDate(d)}
+      {activitiesDays?.map((day, i) => (
+        <Day key={i} onClick={() => selectDate(day)}>
+          {dayOfTheWeek(day)}, {formatDate(day)}
         </Day>
       ))}
       <div className="locations">
-        <Location locationName={'Auditório Principal'}></Location>
-        <Location locationName={'Auditório Principal 2'}></Location>
-        <Location locationName={'Auditório Principal 3'}></Location>
+        {trails.map((trail) => (
+          <Location key={trail.id} locationName={trail.name} activities={trail.activities}></Location>
+        ))}
       </div>
     </Container>
   );
