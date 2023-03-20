@@ -45,8 +45,43 @@ export default function Activities() {
 
   const selectDate = async (date) => {
     const trails = await getActivities(date);
-    setTrails(trails);
+    const filteredTrails = filterActivities(trails);
+    setTrails(filteredTrails);
   };
+
+  function filterActivities(trails) {
+    const userBookedActivities = trails.flatMap((trail) => trail.activities.filter((activity) => activity.userBooked));
+    const userActivityIds = userBookedActivities.map((activity) => activity.id);
+
+    const filteredTrails = trails.map((trail) => {
+      const filteredActivities = trail.activities.filter((activity) => {
+        if (userActivityIds.includes(activity.id)) {
+          return true;
+        } else {
+          const startsAt = new Date(activity.startsAt).getTime();
+          const endsAt = new Date(activity.endsAt).getTime();
+          for (const userActivity of userBookedActivities) {
+            const userStartsAt = new Date(userActivity.startsAt).getTime();
+            const userEndsAt = new Date(userActivity.endsAt).getTime();
+            if (!(startsAt >= userEndsAt || endsAt <= userStartsAt)) {
+              return false;
+            }
+          }
+          return true;
+        }
+      });
+
+      filteredActivities.sort(
+        (a, b) =>
+          Number(new Date(a.startsAt).toLocaleTimeString([], { hour: 'numeric', hour12: false, timeZone: 'UTC' })) -
+          Number(new Date(b.startsAt).toLocaleTimeString([], { hour: 'numeric', hour12: false, timeZone: 'UTC' }))
+      );
+
+      return { ...trail, activities: filteredActivities };
+    });
+
+    return filteredTrails;
+  }
 
   if (paymentRequired) {
     return <PaymenteRequiredActivities />;
