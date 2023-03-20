@@ -1,11 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
 
-
 * {
   box-sizing: border-box;
-  transition: all ease .2s;
+  transition: all ease 0.2s;
 }
 
 body {
-  font-family: "Lexend Deca", sans-serif;
+  font-family: 'Lexend Deca', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #fad5e6;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #fa68ac;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a72d66;
 }

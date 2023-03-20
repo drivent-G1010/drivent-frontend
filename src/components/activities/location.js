@@ -11,7 +11,12 @@ export default function Location({
 }) {
   function formatTime(date) {
     const newDate = new Date(date);
-    const timeString = newDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+    const timeString = newDate.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'UTC',
+    });
     const time = timeString.substring(0, 5);
     return time;
   }
@@ -34,7 +39,7 @@ export default function Location({
     if (userBooked || registered) return 'inside';
 
     if (remainingVacancies === 0) {
-      return 'closed';
+      return 'close';
     } else {
       return 'open';
     }
@@ -77,7 +82,7 @@ const BoxLocation = styled.div`
     font-weight: 400;
     font-size: 17px;
     line-height: 20px;
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     text-align: center;
   }
   span {
@@ -99,7 +104,7 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 17px;
     line-height: 20px;
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
