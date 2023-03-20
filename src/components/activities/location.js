@@ -1,7 +1,14 @@
 import Activity from './activity';
 import styled from 'styled-components';
 
-export default function Location({ locationName, activities, children, ...props }) {
+export default function Location({
+  locationName,
+  activities,
+  children,
+  onActivityRegistration,
+  registeredActivities,
+  ...props
+}) {
   function formatTime(date) {
     const newDate = new Date(date);
     const timeString = newDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
@@ -22,18 +29,32 @@ export default function Location({ locationName, activities, children, ...props 
     return hoursDiff.toFixed(1);
   }
 
+  function handleStatus(remainingVacancies, userBooked, activityId) {
+    const registered = registeredActivities.includes(activityId);
+    if (userBooked || registered) return 'inside';
+
+    if (remainingVacancies === 0) {
+      return 'closed';
+    } else {
+      return 'open';
+    }
+  }
+
   return (
     <Container>
       <h2>{locationName}</h2>
       <BoxLocation className="button" {...props}>
         {activities.map((activity) => (
           <Activity
+            key={activity.id}
+            activityId={activity.id}
             time={handleTime(activity.startsAt, activity.endsAt)}
             name={activity.name}
             start={formatTime(activity.startsAt)}
             end={formatTime(activity.endsAt)}
             vacancies={activity.remainingVacancies}
-            status={activity.remainingVacancies === 0 ? 'closed' : 'open'}
+            status={handleStatus(activity.remainingVacancies, activity.userBooked, activity.id)}
+            onRegister={onActivityRegistration}
           />
         ))}
       </BoxLocation>

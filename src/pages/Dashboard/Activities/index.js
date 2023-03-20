@@ -20,6 +20,7 @@ export default function Activities() {
   const [paymentRequired, setPaymentRequired] = useState(undefined);
   const [activitiesDays, setActivitiesDays] = useState([]);
   const [trails, setTrails] = useState([]);
+  const [registeredActivities, setRegisteredActivities] = useState([]);
 
   useEffect(async () => {
     try {
@@ -85,6 +86,10 @@ export default function Activities() {
     return new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' }).slice(0, 5);
   }
 
+  function handleActivityRegistration(activityId) {
+    setRegisteredActivities([...registeredActivities, activityId]);
+  }
+
   return (
     <Container>
       <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -98,7 +103,13 @@ export default function Activities() {
       ))}
       <div className="locations">
         {trails.map((trail) => (
-          <Location key={trail.id} locationName={trail.name} activities={trail.activities}></Location>
+          <Location
+            key={trail.id}
+            locationName={trail.name}
+            activities={trail.activities}
+            onActivityRegistration={handleActivityRegistration}
+            registeredActivities={registeredActivities}
+          ></Location>
         ))}
       </div>
     </Container>

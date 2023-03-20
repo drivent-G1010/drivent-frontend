@@ -1,15 +1,25 @@
-import styled from 'styled-components';
-import { IoMdExit, IoMdCloseCircleOutline, IoIosCheckmarkCircleOutline } from 'react-icons/io';
+import { IoIosCheckmarkCircleOutline, IoMdCloseCircleOutline } from 'react-icons/io';
 
-export default function Activity({ name, start, end, vacancies, ...props }) {
+import { RxEnter } from 'react-icons/rx';
+import styled from 'styled-components';
+import useSaveActivities from '../../hooks/api/useSaveActivities';
+
+export default function Activity({ activityId, name, start, end, vacancies, onRegister, ...props }) {
+  const { putActivities } = useSaveActivities();
+
+  async function registerActivity() {
+    await putActivities(activityId);
+    onRegister(activityId);
+  }
+
   return (
     <BoxActivity {...props}>
       <div className="text">
         <p>{name}</p>
         <p>{`${start} - ${end}`}</p>
       </div>
-      <div className="icon-enter">
-        <IoMdExit />
+      <div className="icon-enter" onClick={registerActivity}>
+        <RxEnter />
         <span>{`${vacancies} vagas`}</span>
       </div>
       <div className="icon-exit">
@@ -38,7 +48,7 @@ const BoxActivity = styled.div`
     border-right: 1px solid #cfcfcf;
   }
   p {
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-size: 12px;
     line-height: 14px;
@@ -60,9 +70,10 @@ const BoxActivity = styled.div`
     font-size: 20px;
     margin-left: 10px;
     color: #078632;
+    cursor: pointer;
     span {
       display: inline;
-      font-family: 'Roboto';
+      font-family: 'Roboto', sans-serif;
       font-style: normal;
       font-weight: 400;
       font-size: 9px;
@@ -79,7 +90,7 @@ const BoxActivity = styled.div`
     color: #cc6666;
     span {
       display: inline;
-      font-family: 'Roboto';
+      font-family: 'Roboto', sans-serif;
       font-style: normal;
       font-weight: 400;
       font-size: 9px;
@@ -96,7 +107,7 @@ const BoxActivity = styled.div`
     color: #078632;
     span {
       display: inline;
-      font-family: 'Roboto';
+      font-family: 'Roboto', sans-serif;
       font-style: normal;
       font-weight: 400;
       font-size: 9px;
